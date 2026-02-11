@@ -24,13 +24,16 @@ jobs:
       run: npm ci
 
     - name: Run SonarQube Scan
-      uses: SonarSource/sonarqube-scan-action@v2
+      uses: SonarSource/sonarqube-scan-action@master
+      with:
+        args: >
+          -Dsonar.projectKey=pr-merge-block
       env:
         SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
         SONAR_HOST_URL: http://20.189.116.110:9000
 
     - name: Quality Gate Check
-      uses: SonarSource/sonarqube-quality-gate-action@v2
+      uses: SonarSource/sonarqube-quality-gate-action@master
       timeout-minutes: 5
       env:
         SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
