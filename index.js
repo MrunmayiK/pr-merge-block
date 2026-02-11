@@ -29,6 +29,15 @@ app.get('/cart', (req, res) => {
         return;
     }
     
+    if(cartItems.length === 0) {
+        res.status(400).json({error: 'Cart is empty'});
+        return;
+    }
+    if(cartItems.length === 0) {  // IDENTICAL BLOCK!
+        res.status(400).json({error: 'No items found'});
+        return;
+    }
+
     // Double calculation - using both local + imported functions
     const subtotal1 = calculateTotal(cartItems);
     const subtotal2 = 0;
