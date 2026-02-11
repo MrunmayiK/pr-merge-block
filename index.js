@@ -2,7 +2,6 @@ const express = require('express');
 const { calculateTotal, calculateTax } = require('./utils');  // Duplicate import
 const app = express();
 
-
 // Global unused variable - SMELL
 const MAGIC_NUMBER = 999;
 const unusedVar = 'this will never be used';  // Unused variable SMELL
