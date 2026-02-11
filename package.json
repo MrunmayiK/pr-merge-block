@@ -1,0 +1,25 @@
+{
+  "name": "smelly-node-test",
+  "version": "1.0.0",
+  "description": "Deliberately smelly code for SonarQube PR blocking test",
+  "main": "index.js",
+  "scripts": {
+    "start": "node index.js",
+    "test": "echo \"No tests\" && exit 0"
+  },
+  "dependencies": {
+    "express": "^4.22.1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/MrunmayiK/pr-merge-block.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "commonjs",
+  "bugs": {
+    "url": "https://github.com/MrunmayiK/pr-merge-block/issues"
+  },
+  "homepage": "https://github.com/MrunmayiK/pr-merge-block#readme"
+}
