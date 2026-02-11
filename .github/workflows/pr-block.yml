@@ -1,40 +1,38 @@
-name: PR Code Blocker - SonarQube Quality Gate
+name: Scan Current Push Only
 on:
-  push:
-    branches: [ main, develop ]
   pull_request:
-    branches: [ main, develop ]
+    branches: [ main ]
 
 jobs:
   quality-gate:
-    name: SonarQube Quality Gate Check
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v4
       with:
-        fetch-depth: 0  # Shallow clones should be disabled for a better branch coverage
+        fetch-depth: 0
 
-    - name: Node.js Setup
-      uses: actions/setup-node@v4
-      with:
-        node-version: '18'
-        cache: 'npm'
-
-    - name: Install Dependencies
-      run: npm ci
-
-    - name: Run SonarQube Scan
-      uses: SonarSource/sonarqube-scan-action@master
-      with:
-        args: >
-          -Dsonar.projectKey=pr-merge-block
+    - name: SonarQube Scan (CURRENT PR ONLY)
       env:
         SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
         SONAR_HOST_URL: http://20.189.116.110:9000
+      run: |
+        sonar-scanner \
+          -Dsonar.projectKey=github-pr-block-project \
+          -Dsonar.host.url=http://20.189.116.110:9000 \
+          -Dsonar.pullrequest.key=${{ github.event.number }} \
+          -Dsonar.pullrequest.branch=${{ github.head_ref }} \
+          -Dsonar.pullrequest.base=main \
+          -Dsonar.branch.name=${{ github.head_ref }}
 
-    - name: Quality Gate Check
-      uses: SonarSource/sonarqube-quality-gate-action@master
-      timeout-minutes: 5
-      env:
-        SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
-        SONAR_HOST_URL: http://20.189.116.110:9000
+    - name: Wait for Quality Gate (30s)
+      run: |
+        sleep 30
+        STATUS=$(curl -s -u ${{ secrets.SONAR_TOKEN }}: \
+          "http://20.189.116.110:9000/api/qualitygates/project_status?projectKey=smelly-node-test&branch=${{ github.head_ref }}" | jq -r '.projectStatus.status')
+        
+        echo "Quality Gate Status: $STATUS"
+        if [ "$STATUS" != "OK" ]; then
+          echo "FAILED: Current PR contains smelly code!"
+          exit 1
+        fi
+        echo "PASSED: Current PR is clean!"
