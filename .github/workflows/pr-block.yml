@@ -11,13 +11,13 @@ jobs:
       with:
         fetch-depth: 0
 
-    - name: 🔍 SonarQube Scan (CURRENT PR ONLY)
+    - name:  SonarQube Scan (CURRENT PR ONLY)
       env:
         SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
         SONAR_HOST_URL: http://20.189.116.110:9000
       run: |
         sonar-scanner \
-          -Dsonar.projectKey=smelly-node-test \
+          -Dsonar.projectKey=github-pr-block-project \
           -Dsonar.host.url=http://20.189.116.110:9000 \
           -Dsonar.pullrequest.key=${{ github.event.number }} \
           -Dsonar.pullrequest.branch=${{ github.head_ref }} \
