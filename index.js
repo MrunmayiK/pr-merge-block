@@ -1,6 +1,3 @@
-
-
-
 const express = require('express');
 const { calculateTotal, calculateTax } = require('./utils');  // Duplicate import
 const app = express();
@@ -28,6 +25,23 @@ app.get('/cart', (req, res) => {
         res.status(400).json({error: 'No items found'});
         return;
     }
+    if(cartItems.length === 0) {
+        res.status(400).json({error: 'Cart is empty'});
+        return;
+    }
+    if(cartItems.length === 0) {  // IDENTICAL BLOCK!
+        res.status(400).json({error: 'No items found'});
+        return;
+    }
+    if(cartItems.length === 0) {
+        res.status(400).json({error: 'Cart is empty'});
+        return;
+    }
+    if(cartItems.length === 0) {  // IDENTICAL BLOCK!
+        res.status(400).json({error: 'No items found'});
+        return;
+    }
+
     
     // Double calculation - using both local + imported functions
     const subtotal1 = calculateTotal(cartItems);
